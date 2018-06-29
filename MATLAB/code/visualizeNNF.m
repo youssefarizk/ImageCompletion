@@ -5,7 +5,7 @@ addpath('../assets/');
 
 %% Initializations
 
-fileName = '../exports/recon5/img2/ann4.csv';
+fileName = '../exports/milan/img1/ann4.csv';
 showImage = true;
 numAngles = 90;
 numScales = 256;
@@ -37,7 +37,7 @@ end
 imRange = [1 256];
 
 %ROI
-iroi = [390 600 375 740];
+iroi = [330 700 260 480];
 x_l = iroi(1); x_r = iroi(2); y_u = iroi(3); y_d = iroi(4);
 
 rectRange = [x_l y_u (x_r-x_l) (y_d-y_u)];
@@ -54,10 +54,10 @@ if showImage
     subplot(2,2,4);
     imshow(rgbImage);hold on;rectangle('Position',rectRange);
     
-    figure;
+    A = figure;
     imshow(rgbImage);
     rect = rectangle('Position',rectRange);
-    %             print('../../report/testing/nnf_bad','-depsc');
+                print('../../report/Scoring/nnf_good','-depsc');
 end
 
 %% NNF Gradient

@@ -5,18 +5,18 @@ close all;
 
 radiusList = [3 5 10 15 20];
 
-keySet = {'recon1/','recon2/','recon3/','recon4/','recon5/','recon6/'};
-valueSet = {[430 725 280 625],[360 670 310 630],[350 690 330 640],[335 620 170 710],[390 600 375 740],[250 475 240 790]};
+keySet = {'milan/','eiffel/','sphinx/','taj_mahal/','recon1/','recon2/','recon3/','recon4/','recon5/','recon6/'};
+valueSet = {[330 700 260 480],[390 680 380 550],[440 650 230 410],[440 570 185 300],[430 725 280 625],[360 670 310 630],[350 690 330 640],[335 620 170 710],[390 600 375 740],[250 475 240 790]};
 roi = containers.Map(keySet,valueSet);
 
-valueSet = {'img1', 'img1', 'img1', 'img4', 'img1', 'img2'};
+valueSet = {'img1','img1','img1','img1','img1', 'img1', 'img1', 'img4', 'img1', 'img2'};
 img_1 = containers.Map(keySet,valueSet);
 
-valueSet = {'img2', 'img2', 'img2', 'img1', 'img2', 'img1'};
+valueSet = {'img5','img3','img2','img2','img2', 'img2', 'img2', 'img1', 'img2', 'img1'};
 img_2 = containers.Map(keySet,valueSet);
-siteList = ["recon1/","recon2/","recon3/","recon4/","recon5/","recon6/"];
+siteList = ["milan/","eiffel/","sphinx/","taj_mahal/","recon1/","recon2/","recon3/","recon4/","recon5/","recon6/"];
 
-for site=["recon5/"]
+for site=siteList
     
     site = char(site);
     img1 = img_1(site);
@@ -120,6 +120,9 @@ for site=["recon5/"]
     end
     
     colorCorr = colorCorrection(site, img2, iroi, colorCorr);
+    tmp = srcImg;
+    tmp(y_u:y_d-1,x_l:x_r-1,:) = colorCorr;
+    imwrite(tmp,'../../report/recon/milanalign.png')
     
     %% Reconstruction (ADD MORE DIRECTIONS OF PROPAGATION)
     
@@ -129,8 +132,8 @@ for site=["recon5/"]
     i = 1;
     % patch properties
     
-%     for radius=radiusList
-radius = 10;
+    for radius=radiusList
+% radius = 10;
         srcImg = originalSrc;
         srcImg(y_u:y_d-1,x_l:x_r-1,:) = 0;
         fprintf('Site: %s, Radius: %d... \n',site(1:end-1),radius);
@@ -177,13 +180,13 @@ radius = 10;
         
         imwrite(srcImg, sprintf('../../report/testing/reconstruction/multiPatchReconstruction_%s_%d.png',site(1:end-1),radius))
         imwrite(srcImg, sprintf('../../report/testing/reconstruction/multiPatchReconstruction_%s_%d.jpg',site(1:end-1),radius))
-%     end
-%     figure;
-%     plot(radiusList, prop1); hold on;
-%     plot(radiusList, prop);hold off;
-%     title(sprintf('Proportion of patches taken from each intermediate reconstruction for %s source',site(1:end-1)))
-%     xlabel('Patch Radius')
-%     ylabel('Proportion of patches')
-%     legend('Exempar 1', 'Alignment')
-%     print(sprintf('../../report/testing/reconstruction/multiPatchReconstruction_proportion_%s',site(1:end-1)),'-depsc');
+    end
+    figure;
+    plot(radiusList, prop1); hold on;
+    plot(radiusList, prop);hold off;
+    title('Proportion of patches taken from each intermediate reconstruction')
+    xlabel('Patch Radius (pixels)')
+    ylabel('Proportion of patches taken')
+    legend('Exempar 1', 'Alignment')
+    print(sprintf('../../report/testing/reconstruction/multiPatchReconstruction_proportion_%s',site(1:end-1)),'-depsc');
 end
